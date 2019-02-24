@@ -1,0 +1,61 @@
+{% extends 'library/base.html' %}
+
+{% block title %} 发布任务 {% endblock %}
+
+{% load static %}
+<link href="{% static 'library/signin.css' %}" rel="stylesheet">
+
+{% block content %}
+
+    {% if state %}
+        <div class="col-md-2 col-md-offset-5">
+            <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                {% if state == 'success' %}
+                    <h2> 任务已发布，共花费{{ mission.totalcost }}积分！</h2>
+                {% elif state == 'integral_error' %}
+                    <h2> 对不起，您的积分不足！</h2>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container myContainer">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+
+                <form method="POST" action="/mission/" role="form" class="form-horizontal"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <h1 class="form-signin-heading text-center">发布任务</h1>
+
+                    {% for field in missionForm %}
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{ field.label }}</label>
+                            <div class="col-md-9">
+                                {{ field }}
+
+                                {% if field.auto_id == 'id_cost' %}
+                                    <span class="help-block">最低需要59积分/任务</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+
+                    <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                            <button class="btn btn btn-primary btn-block" type="submit">发布任务</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+

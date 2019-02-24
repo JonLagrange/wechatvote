@@ -1,0 +1,39 @@
+{% extends 'library/base.html' %}
+
+{% block title %} 分享链接 {% endblock %}
+
+{% block content %}
+
+        <div class="container myContainer">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                <div class="col-md-6 col-md-offset-1">
+
+                    <div class="text-left">
+                        <h2>分享任务到</h2>
+
+                        <!-- JiaThis Button BEGIN -->
+                        <div class="jiathis_style_32x32" >
+                            <a class="jiathis_button_weixin"></a>
+                            <a class="jiathis_button_cqq"></a>
+                            <a class="jiathis_button_tsina"></a>
+                            <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank" style="margin: auto;text-align: center"></a>
+                        </div>
+                        <script type="text/javascript" >
+                            var jiathis_config={
+                                sm:"weixin,cqq,tsina",
+                                summary:"",
+                                shortUrl:false,
+                                hideMore:true
+                            }
+                        </script>
+                        <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+                        <!-- JiaThis Button END -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

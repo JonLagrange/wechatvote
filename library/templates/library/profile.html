@@ -1,0 +1,29 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}个人信息{% endblock %}
+
+{% block content %}
+
+    <div class="container myContainer">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-5">
+                    <div class="img-rounded profile-photo">
+                        <img src="{{ userprofile.photo.url }}" alt="暂无图片">
+                    </div>
+                </div>
+                <div class="col-md-6 col-md-offset-1">
+                    <h2 class="text-left">姓名:{{ userprofile.name }}</h2>
+                    <br>
+                    <h4>用户名：{{ userprofile.phone }}</h4>
+                    <h4><span class="glyphicon glyphicon-phone"></span>
+                        电话：{{ userprofile.phone }}
+                    </h4>
+                    <h4>电子邮箱：{{ userprofile.email }}</h4>
+                    <h4>拥有积分：{{ userprofile.integral }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

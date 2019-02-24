@@ -1,0 +1,70 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}任务详情{% endblock %}
+
+
+{% block content %}
+
+    {% if state %}
+        <div class="col-md-4 col-md-offset-4">
+            <div class="alert alert-warning">
+                <a href="/login" class="close" data-dismiss="alert">&times;</a>
+                {% if state == 'mission_lock' %}
+                    <h2>任务已锁定，请在10分钟内上传任务凭证，超时视为放弃任务！</h2>
+                {% elif state == 'mission_empty' %}
+                    <h2>任务已被执行完毕！</h2>
+                {% elif state == 'lock_exist' %}
+                    <h2>不能重复锁定！</h2>
+                {% elif state == 'mission_error' %}
+                    <h2>您不能执行自己发布的任务！</h2>
+                {% elif state == 'mission_dropped' %}
+                    <h2>您已放弃该任务！</h2>
+                {% elif state == 'unknown_error' %}
+                    <h2>未知错误！</h2>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="container myContainer">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                <div class="col-md-6 col-md-offset-1">
+                    <h1 class="form-signin-heading text-center">任务详情</h1>
+
+                    <h4>任务类型：{{'【'}}{{ mission.type }}{{'】'}}</h4>
+                    <h4>任务发布者：{{ mission.user }}</h4>
+                    <h4>任务积分：{{ mission.cost }}{{ '积分' }}</h4>
+
+                    <h4>任务描述：</h4>
+                    <p>{{ mission.description }}</p>
+
+                    <h4>任务完成需上传截图凭证，样图如下:</h4>
+                    {% for missionimg in missionimage %}
+                         <p><img class="img-responsive" src="{{ missionimg.imageshots.url }}" ></p>
+                    {% endfor %}
+
+                    {% if missionlock.count == 0 %}
+                        <button class="btn btn btn-primary btn-block"
+                                onclick="location.href='?mission_id={{ mission.id }}&action=mission_accept';">执行该任务
+                        </button>
+
+                    {% else %}
+                        <button class="btn btn btn-primary btn-block"
+                                onclick="location.href='share'+'?mission_id={{ mission.id }}';">分享到社交平台开始做任务
+                        </button>
+                        <button class="btn btn btn-primary btn-block"
+                                onclick="location.href='proof'+'?mission_id={{ mission.id }}';">任务完成，开始上传图片凭证
+                        </button>
+                        <button class="btn btn btn-primary btn-block"
+                                onclick="location.href='?mission_id={{ mission.id }}&action=mission_drop';">放弃该任务
+                        </button>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

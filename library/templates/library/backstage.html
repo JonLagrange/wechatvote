@@ -1,0 +1,58 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}后台管理{% endblock %}
+
+{% block content %}
+
+    <div class="container col-md-8 col-md-offset-2">
+
+        <h1 class="form-signin-heading text-center">后台管理</h1>
+        <table class="table table-hover">
+            <thead>
+            <th>#</th>
+            <th>用户名</th>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>头像</th>
+            <th>积分</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+            {% for user in userprofile %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><img class="img-responsive" src="{{ user.photo.url }}" width="90" height="128"></td>
+                    <td>{{ user.integral }}{{ '积分' }}</td>
+                    <td><a href="/admin_alter?user_id={{ user.user_id }}">{{ '修改' }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <nav class="myContainer">
+            <ul class="pager">
+                {% if userprofile.has_previous %}
+                    <li class="previous"><a
+                            href="?page={{ userprofile.previous_page_number }}">上一页</a>
+                    </li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">上一页</a></li>
+                {% endif %}
+                第 {{ userprofile.number }} / {{ userprofile.paginator.num_pages }}页
+                {% if userprofile.has_next %}
+                    <li class="next"><a href="?page={{ userprofile.next_page_number }}">下一页</a>
+                    </li>
+                {% else %}
+                    <li class="next disabled"><a href="#">下一页</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}我的任务{% endblock %}
+
+{% block content %}
+
+    <div class="container col-md-8 col-md-offset-2">
+
+        <h1 class="form-signin-heading text-center">我的任务</h1>
+        <table class="table table-hover">
+            <thead>
+            <th>#</th>
+            <th>任务</th>
+            <th>任务发布者</th>
+            <th>投票类型</th>
+            <th>任务描述</th>
+            <th>积分</th>
+            <th>我的凭证</th>
+            <th>当前状态</th>
+            </thead>
+            <tbody>
+            {% for lock in missionslock %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><img class="img-responsive" src="{{ lock.imageshot.url }}" width="90" height="128"></td>
+                    <td>{{ lock.issuer }}</td>
+                    <td>{{ lock.type }}</td>
+                    <td>{{ lock.description }}</td>
+                    <td>{{ lock.cost }}{{ '积分' }}</td>
+                    <td>{{ '未上传' }}</td>
+                    {% if lock.is_pass == 3 %}
+                        <td><a href="/detail?mission_id={{ lock.mission_id }}">{{ '正在执行中' }}</a></td>
+                    {% elif lock.is_pass == 4 %}
+                        <td>已超时</td>
+                    {% elif lock.is_pass == 0 %}
+                        <td>等待审核</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+            {% for mission in mymissions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><img class="img-responsive" src="{{ mission.imageshot.url }}" width="90" height="128"></td>
+                    <td>{{ mission.issuer }}</td>
+                    <td>{{ mission.type }}</td>
+                    <td>{{ mission.description }}</td>
+                    <td>{{ mission.cost }}{{ '积分' }}</td>
+                    <td> <img class="img-responsive" src="{{ mission.proof.url }}" width="90" height="128"></td>
+
+                    {% if mission.is_pass == 0 %}
+                        <td>等待审核</td>
+                    {% elif mission.is_pass == 1 %}
+                        <td>审核通过</td>
+                    {% elif mission.is_pass == -1 %}
+                        <td>审核不通过</td>
+                    {% elif mission.is_pass == 2 %}
+                        <td>等待审核</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <nav class="myContainer">
+            <ul class="pager">
+                {% if mymissions.has_previous %}
+                    <li class="previous"><a
+                            href="?page={{ mymissions.previous_page_number }}">上一页</a>
+                    </li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">上一页</a></li>
+                {% endif %}
+                第 {{ mymissions.number }} / {{ mymissions.paginator.num_pages }}页
+                {% if mymissions.has_next %}
+                    <li class="next"><a href="?page={{ mymissions.next_page_number }}">下一页</a>
+                    </li>
+                {% else %}
+                    <li class="next disabled"><a href="#">下一页</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
+

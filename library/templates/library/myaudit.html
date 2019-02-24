@@ -1,0 +1,68 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}我的审核{% endblock %}
+
+{% block content %}
+
+    <div class="container col-md-8 col-md-offset-2">
+
+        <h1 class="form-signin-heading text-center">我的审核</h1>
+        <table class="table table-hover">
+            <thead>
+            <th>#</th>
+            <th>任务</th>
+            <th>任务执行者</th>
+            <th>任务类型</th>
+            <th>任务描述</th>
+            <th>任务凭证</th>
+            <th>审核结果</th>
+            </thead>
+            <tbody>
+            {% for domission in domissions %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><img class="img-responsive" src="{{ domission.imageshot.url }}" width="90" height="128"></td>
+                    <td>{{ domission.executor }}</td>
+                    <td>{{ domission.type }}</td>
+                    <td>{{ domission.description }}</td>
+                    <td><img class="img-responsive" src="{{ domission.proof.url }}" width="90" height="128"></td>
+                    {% if domission.is_pass == 0 %}
+                        <td><a href="/check?mission_id={{ domission.mission_id }}&domission_id={{ domission.id }}">未审核</a></td>
+                    {% elif domission.is_pass == 1 %}
+                        <td>审核通过</td>
+                    {% elif domission.is_pass == -1 %}
+                        <td>审核不通过</td>
+                    {% elif domission.is_pass == 2 %}
+                        {% if request.user.username == '13056676836' %}
+                            <td><a href="/check?mission_id={{ domission.mission_id }}&domission_id={{ domission.id }}">待系统管理员审核</a></td>
+                        {% else %}
+                            <td>待系统管理员审核</td>
+                        {% endif %}
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <nav class="myContainer">
+            <ul class="pager">
+                {% if domissions.has_previous %}
+                    <li class="previous"><a
+                            href="?page={{ domissions.previous_page_number }}">上一页</a>
+                    </li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">上一页</a></li>
+                {% endif %}
+                第 {{ domissions.number }} / {{ domissions.paginator.num_pages }}页
+                {% if domissions.has_next %}
+                    <li class="next"><a href="?page={{ domissions.next_page_number }}">下一页</a>
+                    </li>
+                {% else %}
+                    <li class="next disabled"><a href="#">下一页</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
+

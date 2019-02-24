@@ -1,0 +1,88 @@
+{% extends "library/base.html" %}
+{% load staticfiles %}
+{% block title %}微信互推{% endblock %}
+
+{% block content %}
+
+    {% if state %}
+        <div class="col-md-4 col-md-offset-4">
+            <div class="alert alert-warning">
+                <a href="/login" class="close" data-dismiss="alert">&times;</a>
+                {% if state == 'filter_zero' %}
+                    <h2>暂无可执行任务！</h2>
+                {% elif state == 'mission_empty' %}
+                    <h2>任务已被执行完毕！</h2>
+                {% elif state == 'lock_exist' %}
+                    <h2>不能重复锁定！</h2>
+                {% elif state == 'mission_error' %}
+                    <h2>您不能执行自己发布的任务！</h2>
+                {% elif state == 'mission_dropped' %}
+                    <h2>您已放弃该任务！</h2>
+                {% elif state == 'unknown_error' %}
+                    <h2>未知错误！</h2>
+                {% elif state == 'self_search' %}
+                    <h2>你不能执行自己发布的任务！</h2>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container col-md-8 col-md-offset-2">
+
+        <div class="container myContainer">
+           <div class="form-group">
+                <div class="col-md-7 col-md-offset-3">
+                    <button class="btn btn btn-primary btn-block" onclick="location.href='detail'+'?mission_id={{ mission.id }}&action=mission_accept';">获取任务</button>
+                </div>
+           </div>
+        </div>
+
+        <table class="table table-hover">
+            <thead>
+            <th>#</th>
+            <th>任务</th>
+            <th>发布者</th>
+            <th>投票类型</th>
+            <th>任务描述</th>
+            <th>预计用时</th>
+            <th>积分</th>
+            <th>任务剩余</th>
+            <th>操作</th>
+            </thead>
+            <tbody>
+
+            <script type="text/javascript">
+                var date1= new Date();  //开始时间
+            </script>
+
+            <script type="text/javascript">
+                var date2 = new Date();    //结束时间
+                var date3 = date2.getTime() - date1.getTime();   //时间差的毫秒数
+                //alert(date3/1000);
+            </script>
+
+            </tbody>
+        </table>
+
+        <nav class="myContainer">
+            <ul class="pager">
+                {% if missions.has_previous %}
+                    <li class="previous"><a
+                            href="?page={{ missions.previous_page_number }}">上一页</a>
+                    </li>
+                {% else %}
+                    <li class="previous disabled"><a href="#">上一页</a></li>
+                {% endif %}
+                第 {{ missions.number }} / {{ missions.paginator.num_pages }}页
+                {% if missions.has_next %}
+                    <li class="next"><a href="?page={{ missions.next_page_number }}">下一页</a>
+                    </li>
+                {% else %}
+                    <li class="next disabled"><a href="#">下一页</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+{% endblock %}
+
